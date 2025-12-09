@@ -10,7 +10,7 @@
   [![React](https://img.shields.io/badge/React-18.0-61dafb)](https://react.dev/)
   [![Vite](https://img.shields.io/badge/Vite-5.0-646cff)](https://vitejs.dev/)
 
-  [View Repo](https://github.com/stephenkyaw/OpenKB)
+  [View Repo](https://github.com/stephenkyaw/OpenKB) • [Live Demo](https://stephenkyaw.github.io/OpenKB/)
 </div>
 
 ---
