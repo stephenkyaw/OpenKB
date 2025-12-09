@@ -1,0 +1,5 @@
+{
+  "name": "OpenKB",
+  "description": "OpenSource Knowledge Base RAG application featuring document indexing management and an AI chat interface.",
+  "requestFramePermissions": []
+}
