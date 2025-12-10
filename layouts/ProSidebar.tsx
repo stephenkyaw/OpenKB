@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ViewState, ChatSession, Agent, User } from '../types';
-import { Library, MessageSquareText, LogOut, BrainCircuit, Settings, Bot, Trash2, Home, PanelLeftClose, PanelLeft, MoreHorizontal } from 'lucide-react';
+import { Library, MessageSquareText, LogOut, BrainCircuit, Settings, Bot, Trash2, Home, PanelLeftClose, PanelLeft, MoreHorizontal, Notebook } from 'lucide-react';
 
 interface SidebarProps {
     activeView: ViewState;
@@ -109,6 +109,12 @@ export const ProSidebar: React.FC<SidebarProps> = ({
                     <Library size={20} />
                     {!isCollapsed && <span>Knowledge Base</span>}
                     <Tooltip text="Knowledge Base" />
+                </div>
+
+                <div className={navItemClass(ViewState.NOTES)} onClick={() => handleNavigation(ViewState.NOTES)}>
+                    <Notebook size={20} />
+                    {!isCollapsed && <span>Notes</span>}
+                    <Tooltip text="Notes" />
                 </div>
 
                 <div className={navItemClass(ViewState.SETTINGS)} onClick={() => handleNavigation(ViewState.SETTINGS)}>

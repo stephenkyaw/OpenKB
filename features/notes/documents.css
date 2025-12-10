@@ -1,0 +1,46 @@
+/* Basic Tiptap Editor Styles */
+.ProseMirror {
+    outline: none;
+    min-height: 100vh;
+    padding: 2rem; /* Google Docs-like padding */
+}
+
+.ProseMirror p.is-editor-empty:first-child::before {
+    color: #adb5bd;
+    content: attr(data-placeholder);
+    float: left;
+    height: 0;
+    pointer-events: none;
+}
+
+.ProseMirror h1 {
+    font-size: 2em;
+    font-weight: bold;
+    margin-bottom: 0.5em;
+}
+
+.ProseMirror h2 {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 0.5em;
+}
+
+.ProseMirror ul, .ProseMirror ol {
+    padding: 0 1rem;
+    margin: 1rem 1rem 1rem 0;
+}
+
+.ProseMirror ul li {
+    list-style-type: disc;
+}
+
+.ProseMirror ol li {
+    list-style-type: decimal;
+}
+
+.ProseMirror blockquote {
+    border-left: 3px solid #e2e8f0;
+    padding-left: 1rem;
+    margin-left: 0;
+    font-style: italic;
+}

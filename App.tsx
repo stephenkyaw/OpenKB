@@ -7,6 +7,7 @@ import { SettingsPage } from './pages/SettingsPage';
 import { AgentsPage } from './pages/AgentsPage';
 import { HomePage } from './pages/HomePage';
 import { UsersPage } from './pages/UsersPage';
+import { NotesPage } from './pages/NotesPage';
 import { ViewState, KnowledgeAsset, Message, DocStatus, ChatSession } from './types'; // Removed User, Agent (handled by hooks)
 import { MOCK_INITIAL_ASSETS, MOCK_SESSIONS } from './constants';
 import { generateRAGResponse } from './services/geminiService';
@@ -253,6 +254,9 @@ const App: React.FC = () => {
               onToggleAssetStatus={handleToggleAssetStatus}
             />
           )}
+
+          {activeView === ViewState.NOTES && <NotesPage />}
+
 
           {activeView === ViewState.SETTINGS && (
             <SettingsPage

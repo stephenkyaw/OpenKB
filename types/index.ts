@@ -5,7 +5,8 @@ export enum ViewState {
   CHAT = 'CHAT',
   KNOWLEDGE = 'KNOWLEDGE',
   SETTINGS = 'SETTINGS',
-  AGENTS = 'AGENTS'
+  AGENTS = 'AGENTS',
+  NOTES = 'NOTES'
 }
 
 export enum DocStatus {
@@ -96,4 +97,25 @@ export interface User {
   lastActive: string;
   avatarUrl?: string;
   joinedDate: string;
+}
+
+export interface Note {
+  id: string;
+  title: string;
+  content: string; // HTML string
+  createdAt: string;
+  updatedAt: string;
+  comments?: Comment[];
+  parentId?: string;
+  coverImage?: string;
+  icon?: string;
+}
+
+export interface Comment {
+  id: string;
+  authorName: string;
+  authorAvatar?: string;
+  content: string;
+  createdAt: string;
+  isResolved?: boolean;
 }
