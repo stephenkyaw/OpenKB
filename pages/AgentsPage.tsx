@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { Agent, KnowledgeAsset, AgentTool } from '../types';
 import { Bot, Plus, Search, Filter, Grid, List, Trash2, MessageSquareText, ChevronLeft, ChevronRight, ArrowRight, User, FileScan, PenTool, Globe, LineChart, Mail, Bell, HardDrive, GitBranch, UserCheck, StopCircle, Cpu, Edit, Settings } from 'lucide-react';
 import { AgentWorkflowEditor } from '../features/agents/components/AgentWorkflowEditor';
+import { AgentCard } from '../features/agents/components/AgentCard';
 import { Card } from '../components/ui/Card';
 import { Modal } from '../components/ui/Modal';
 import { Badge } from '../components/ui/Badge';
@@ -48,7 +49,7 @@ export const AgentsPage: React.FC<AgentManagementViewProps> = ({ agents, assets,
     const [searchQuery, setSearchQuery] = useState('');
     const [filterTool, setFilterTool] = useState<AgentTool | 'All'>('All');
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = viewMode === 'grid' ? 6 : 8;
+    const itemsPerPage = viewMode === 'grid' ? 12 : 8;
 
     // Filter Logic
     const filteredAgents = agents.filter(agent => {
@@ -161,40 +162,15 @@ export const AgentsPage: React.FC<AgentManagementViewProps> = ({ agents, assets,
                     </div>
 
                     {viewMode === 'grid' ? (
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
                             {paginatedAgents.map(agent => (
-                                <div key={agent.id} className="group p-6 rounded-2xl bg-white/50 border border-slate-100 hover:border-primary-300 hover:shadow-md transition-all relative flex flex-col">
-                                    <div className="flex justify-between items-start mb-4">
-                                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-white text-xl shadow-lg shadow-purple-900/10 ${agent.color}`}>
-                                            <Bot size={24} />
-                                        </div>
-                                        <div className="flex gap-1">
-                                            <button onClick={(e) => { e.stopPropagation(); openEditModal(agent); }} className="p-2 text-slate-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors">
-                                                <Edit size={16} />
-                                            </button>
-                                            <button onClick={(e) => { e.stopPropagation(); onDeleteAgent(agent.id); }} className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
-                                                <Trash2 size={16} />
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <h3 className="font-bold text-lg text-slate-900 mb-1">{agent.name}</h3>
-                                    <div className="text-xs font-bold text-primary-600 uppercase tracking-wider mb-3">{agent.role}</div>
-                                    <p className="text-sm text-slate-500 leading-relaxed mb-4 line-clamp-2">{agent.systemInstructions}</p>
-
-                                    <div className="mt-auto pt-4 border-t border-slate-100/50 flex items-center justify-between">
-                                        <div className="flex items-center gap-2">
-                                            {agent.tools.slice(0, 3).map((tool, i) => (
-                                                <div key={i} className="text-slate-400" title={tool}>
-                                                    {React.createElement(getToolIconComponent(tool), { size: 16 })}
-                                                </div>
-                                            ))}
-                                            {(agent.tools?.length || 0) > 3 && <span className="text-xs text-slate-400">+{agent.tools!.length - 3}</span>}
-                                        </div>
-                                        <button onClick={() => onChatWithAgent(agent.id)} className="text-sm font-medium text-slate-400 hover:text-primary-600 transaction-colors flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                                            Details <ArrowRight size={14} />
-                                        </button>
-                                    </div>
-                                </div>
+                                <AgentCard
+                                    key={agent.id}
+                                    agent={agent}
+                                    onEdit={openEditModal}
+                                    onDelete={onDeleteAgent}
+                                    onChat={onChatWithAgent}
+                                />
                             ))}
                         </div>
                     ) : (
@@ -259,6 +235,6 @@ export const AgentsPage: React.FC<AgentManagementViewProps> = ({ agents, assets,
                 </GlassCard>
             </div>
             {renderEditorModal()}
-        </PageContainer>
+        </PageContainer >
     );
 };
