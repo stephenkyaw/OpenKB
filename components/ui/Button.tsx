@@ -18,10 +18,10 @@ export const Button: React.FC<ButtonProps> = ({
     disabled,
     ...props
 }) => {
-    const baseStyles = 'inline-flex items-center justify-center font-medium transition-all rounded-[14px] focus:outline-none focus:ring-2 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed gap-2';
+    const baseStyles = 'inline-flex items-center justify-center font-medium transition-all rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed gap-2';
 
     const variants = {
-        primary: 'bg-primary-600 text-white hover:bg-primary-700 shadow-md shadow-primary-600/20 active:scale-[0.98]',
+        primary: 'bg-primary-600 text-white hover:bg-primary-700 shadow-lg shadow-primary-600/20 active:scale-[0.98]',
         secondary: 'bg-primary-100 text-primary-700 hover:bg-primary-200',
         ghost: 'bg-transparent text-slate-600 hover:bg-slate-100',
         danger: 'bg-red-50 text-red-600 hover:bg-red-100',

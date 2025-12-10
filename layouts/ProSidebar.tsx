@@ -28,9 +28,9 @@ export const ProSidebar: React.FC<SidebarProps> = ({
     };
 
     const navItemClass = (view: ViewState) => `
-    flex items-center gap-3 px-3 py-3 mx-2 rounded-[16px] cursor-pointer transition-all duration-200 font-medium text-sm tracking-wide group relative
+    flex items-center gap-3 px-3 py-3 mx-2 rounded-xl cursor-pointer transition-all duration-200 font-medium text-sm tracking-wide group relative
     ${activeView === view
-            ? 'bg-primary-50 text-primary-900'
+            ? 'bg-primary-50 text-primary-900 shadow-sm'
             : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'}
     ${isCollapsed ? 'justify-center' : ''}
   `;
@@ -47,13 +47,13 @@ export const ProSidebar: React.FC<SidebarProps> = ({
 
     return (
         <div
-            className={`${isCollapsed ? 'w-20' : 'w-72'} h-[95vh] my-auto ml-4 rounded-[24px] bg-white/80 backdrop-blur-xl flex flex-col flex-shrink-0 z-20 border border-white/50 shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-300 ease-in-out`}
+            className={`${isCollapsed ? 'w-20' : 'w-72'} h-[95vh] my-auto ml-4 rounded-3xl bg-white/80 backdrop-blur-xl flex flex-col flex-shrink-0 z-20 border border-white/50 shadow-soft transition-all duration-300 ease-in-out`}
         >
             {/* Header */}
             <div className={`h-24 flex items-center shrink-0 ${isCollapsed ? 'justify-center' : 'justify-between px-6'}`}>
                 {!isCollapsed && (
                     <div className="flex items-center gap-3 cursor-pointer overflow-hidden" onClick={() => handleNavigation(ViewState.HOME)}>
-                        <div className="bg-primary-600 p-2 rounded-[14px] shadow-lg shadow-primary-600/20 shrink-0">
+                        <div className="bg-primary-600 p-2 rounded-xl shadow-lg shadow-primary-600/20 shrink-0">
                             <BrainCircuit className="w-6 h-6 text-white" />
                         </div>
                         <span className="text-xl font-medium text-slate-800 tracking-tight whitespace-nowrap">OpenKB</span>
@@ -185,9 +185,9 @@ export const ProSidebar: React.FC<SidebarProps> = ({
             </div>
 
             {/* User Profile Footer */}
-            <div className="p-4 border-t border-slate-100/50 bg-white/50 rounded-b-[24px]">
+            <div className="p-4 border-t border-slate-100/50 bg-white/50 rounded-b-3xl">
                 {user ? (
-                    <div className={`flex items-center gap-3 rounded-[16px] p-2 transition-all ${isCollapsed ? 'justify-center' : 'hover:bg-slate-50'}`}>
+                    <div className={`flex items-center gap-3 rounded-xl p-2 transition-all ${isCollapsed ? 'justify-center' : 'hover:bg-slate-50'}`}>
                         <div className="w-10 h-10 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold shadow-sm shrink-0">
                             {user.avatarUrl ? (
                                 <img src={user.avatarUrl} alt={user.name} className="w-full h-full rounded-full object-cover" />

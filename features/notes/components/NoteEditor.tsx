@@ -12,6 +12,8 @@ import { useDocumentAI } from '../hooks/useDocumentAI';
 import { CommentsSidebar } from './CommentsSidebar';
 import SuggestionList from './SuggestionList';
 import { SlashCommand } from '../extensions/slashCommand';
+import { PageContainer } from '../../../components/layouts/PageContainer';
+import { GlassCard } from '../../../components/ui/GlassCard';
 
 interface NoteEditorProps {
     note?: Note;
@@ -193,113 +195,109 @@ export const NoteEditor: React.FC<NoteEditorProps> = ({ note, onSave, onBack, re
     if (!editor) return null;
 
     return (
-        <div className="flex-1 flex h-full bg-[#FDFBFF] relative overflow-hidden">
-
+        <PageContainer>
             {/* Main Editor Composition Area - Glass Card Effect */}
-            <div className="flex-1 flex flex-col h-full overflow-y-auto p-4 md:p-8">
-                <div className="w-full max-w-5xl mx-auto h-full flex flex-col bg-white/60 backdrop-blur-xl rounded-[32px] border border-white/60 shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden">
-
-                    {/* Minimal Header */}
-                    <div className="h-16 flex items-center justify-between px-8 md:px-12 border-b border-white/40 bg-white/30">
-                        <div className="flex items-center gap-2 text-sm font-medium text-slate-500 cursor-pointer hover:text-primary-600 transition-colors" onClick={onBack}>
-                            <span className="opacity-50 hover:underline">Notes</span> <span className="opacity-30">/</span> <span className="text-primary-600">{title}</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                            <span className="text-xs font-bold text-slate-300 uppercase tracking-wider mr-3">Saved</span>
-                            <button onClick={() => setShowComments(!showComments)} className="p-2 hover:bg-white/50 rounded-full text-slate-400 hover:text-primary-600 transition-colors relative">
-                                <MessageSquare size={18} />
-                                {comments.filter(c => !c.isResolved).length > 0 && <span className="absolute top-1 right-1 w-2 h-2 bg-red-400 rounded-full" />}
-                            </button>
-                            <button className="p-2 hover:bg-white/50 rounded-full text-slate-400 hover:text-slate-600 transition-colors">
-                                <Share2 size={18} />
-                            </button>
-                            <button className="p-2 hover:bg-white/50 rounded-full text-slate-400 hover:text-slate-600 transition-colors">
-                                <MoreHorizontal size={18} />
-                            </button>
-                        </div>
+            <GlassCard className="flex flex-col h-[calc(100vh-4rem)] p-0" noPadding>
+                {/* Minimal Header */}
+                <div className="h-16 flex items-center justify-between px-8 md:px-12 border-b border-white/40 bg-white/30 shrink-0">
+                    <div className="flex items-center gap-2 text-sm font-medium text-slate-500 cursor-pointer hover:text-primary-600 transition-colors" onClick={onBack}>
+                        <span className="opacity-50 hover:underline">Notes</span> <span className="opacity-30">/</span> <span className="text-primary-600">{title}</span>
                     </div>
-
-                    {/* Editor Scroll Container */}
-                    <div className="flex-1 overflow-y-auto custom-scrollbar">
-                        {/* Title Input */}
-                        <div className="px-8 md:px-12 pt-12 pb-4 max-w-4xl mx-auto w-full">
-                            <input
-                                type="text"
-                                value={title}
-                                onChange={(e) => setTitle(e.target.value)}
-                                placeholder="Untitled"
-                                className="text-4xl md:text-5xl font-bold text-slate-900 border-none outline-none placeholder-slate-200 w-full bg-transparent p-0 tracking-tight"
-                            />
-                        </div>
-
-                        {/* Tiptap Editor */}
-                        <div className="px-8 md:px-12 pb-24 max-w-4xl mx-auto w-full">
-                            {editor && (
-                                <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }} className="flex items-center gap-1 p-1 bg-slate-900 text-white rounded-lg shadow-xl">
-                                    <button
-                                        onClick={() => editor.chain().focus().toggleBold().run()}
-                                        className={`p-1.5 rounded hover:bg-slate-700 ${editor.isActive('bold') ? 'bg-slate-700' : ''}`}
-                                    >
-                                        <Bold size={14} />
-                                    </button>
-                                    <button
-                                        onClick={() => editor.chain().focus().toggleItalic().run()}
-                                        className={`p-1.5 rounded hover:bg-slate-700 ${editor.isActive('italic') ? 'bg-slate-700' : ''}`}
-                                    >
-                                        <Italic size={14} />
-                                    </button>
-                                    <button
-                                        onClick={() => editor.chain().focus().toggleUnderline().run()}
-                                        className={`p-1.5 rounded hover:bg-slate-700 ${editor.isActive('underline') ? 'bg-slate-700' : ''}`}
-                                    >
-                                        <UnderlineIcon size={14} />
-                                    </button>
-                                    <div className="w-px h-4 bg-slate-700 mx-1" />
-                                    <button
-                                        className="p-1.5 rounded hover:bg-purple-600 text-purple-300 hover:text-white flex items-center gap-1"
-                                        onClick={async () => {
-                                            const selection = editor.state.doc.textBetween(editor.state.selection.from, editor.state.selection.to);
-                                            if (selection) {
-                                                const result = await askAI(selection, "Improve this text");
-                                                // Simplify replace for demo
-                                                editor.chain().focus().deleteSelection().insertContent(result).run();
-                                            }
-                                        }}
-                                    >
-                                        <Sparkles size={14} />
-                                        <span className="text-xs font-medium">AI Fix</span>
-                                    </button>
-                                </BubbleMenu>
-                            )}
-
-                            {editor && (
-                                <FloatingMenu editor={editor} tippyOptions={{ duration: 100 }} className="flex items-center gap-1 -ml-8 bg-white border border-slate-200 shadow-lg rounded-md p-1">
-                                    <button
-                                        onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-                                        className={`p-1.5 rounded hover:bg-slate-100 ${editor.isActive('heading', { level: 1 }) ? 'bg-slate-100' : ''}`}
-                                    >
-                                        <Heading1 size={16} className="text-slate-600" />
-                                    </button>
-                                    <button
-                                        onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-                                        className={`p-1.5 rounded hover:bg-slate-100 ${editor.isActive('heading', { level: 2 }) ? 'bg-slate-100' : ''}`}
-                                    >
-                                        <Heading2 size={16} className="text-slate-600" />
-                                    </button>
-                                    <button
-                                        onClick={() => editor.chain().focus().toggleBulletList().run()}
-                                        className={`p-1.5 rounded hover:bg-slate-100 ${editor.isActive('bulletList') ? 'bg-slate-100' : ''}`}
-                                    >
-                                        <List size={16} className="text-slate-600" />
-                                    </button>
-                                </FloatingMenu>
-                            )}
-
-                            <EditorContent editor={editor} />
-                        </div>
+                    <div className="flex items-center gap-1">
+                        <span className="text-xs font-bold text-slate-300 uppercase tracking-wider mr-3">Saved</span>
+                        <button onClick={() => setShowComments(!showComments)} className="p-2 hover:bg-white/50 rounded-full text-slate-400 hover:text-primary-600 transition-colors relative">
+                            <MessageSquare size={18} />
+                            {comments.filter(c => !c.isResolved).length > 0 && <span className="absolute top-1 right-1 w-2 h-2 bg-red-400 rounded-full" />}
+                        </button>
+                        <button className="p-2 hover:bg-white/50 rounded-full text-slate-400 hover:text-slate-600 transition-colors">
+                            <Share2 size={18} />
+                        </button>
+                        <button className="p-2 hover:bg-white/50 rounded-full text-slate-400 hover:text-slate-600 transition-colors">
+                            <MoreHorizontal size={18} />
+                        </button>
                     </div>
                 </div>
-            </div>
+
+                {/* Editor Scroll Container */}
+                <div className="flex-1 overflow-y-auto custom-scrollbar bg-white/40">
+                    {/* Title Input */}
+                    <div className="px-8 md:px-12 pt-12 pb-4 max-w-4xl mx-auto w-full">
+                        <input
+                            type="text"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                            placeholder="Untitled"
+                            className="text-4xl md:text-5xl font-bold text-slate-900 border-none outline-none placeholder-slate-200 w-full bg-transparent p-0 tracking-tight"
+                        />
+                    </div>
+
+                    {/* Tiptap Editor */}
+                    <div className="px-8 md:px-12 pb-24 max-w-4xl mx-auto w-full">
+                        {editor && (
+                            <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }} className="flex items-center gap-1 p-1 bg-slate-900 text-white rounded-lg shadow-xl">
+                                <button
+                                    onClick={() => editor.chain().focus().toggleBold().run()}
+                                    className={`p-1.5 rounded hover:bg-slate-700 ${editor.isActive('bold') ? 'bg-slate-700' : ''}`}
+                                >
+                                    <Bold size={14} />
+                                </button>
+                                <button
+                                    onClick={() => editor.chain().focus().toggleItalic().run()}
+                                    className={`p-1.5 rounded hover:bg-slate-700 ${editor.isActive('italic') ? 'bg-slate-700' : ''}`}
+                                >
+                                    <Italic size={14} />
+                                </button>
+                                <button
+                                    onClick={() => editor.chain().focus().toggleUnderline().run()}
+                                    className={`p-1.5 rounded hover:bg-slate-700 ${editor.isActive('underline') ? 'bg-slate-700' : ''}`}
+                                >
+                                    <UnderlineIcon size={14} />
+                                </button>
+                                <div className="w-px h-4 bg-slate-700 mx-1" />
+                                <button
+                                    className="p-1.5 rounded hover:bg-purple-600 text-purple-300 hover:text-white flex items-center gap-1"
+                                    onClick={async () => {
+                                        const selection = editor.state.doc.textBetween(editor.state.selection.from, editor.state.selection.to);
+                                        if (selection) {
+                                            const result = await askAI(selection, "Improve this text");
+                                            // Simplify replace for demo
+                                            editor.chain().focus().deleteSelection().insertContent(result).run();
+                                        }
+                                    }}
+                                >
+                                    <Sparkles size={14} />
+                                    <span className="text-xs font-medium">AI Fix</span>
+                                </button>
+                            </BubbleMenu>
+                        )}
+
+                        {editor && (
+                            <FloatingMenu editor={editor} tippyOptions={{ duration: 100 }} className="flex items-center gap-1 -ml-8 bg-white border border-slate-200 shadow-lg rounded-md p-1">
+                                <button
+                                    onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+                                    className={`p-1.5 rounded hover:bg-slate-100 ${editor.isActive('heading', { level: 1 }) ? 'bg-slate-100' : ''}`}
+                                >
+                                    <Heading1 size={16} className="text-slate-600" />
+                                </button>
+                                <button
+                                    onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+                                    className={`p-1.5 rounded hover:bg-slate-100 ${editor.isActive('heading', { level: 2 }) ? 'bg-slate-100' : ''}`}
+                                >
+                                    <Heading2 size={16} className="text-slate-600" />
+                                </button>
+                                <button
+                                    onClick={() => editor.chain().focus().toggleBulletList().run()}
+                                    className={`p-1.5 rounded hover:bg-slate-100 ${editor.isActive('bulletList') ? 'bg-slate-100' : ''}`}
+                                >
+                                    <List size={16} className="text-slate-600" />
+                                </button>
+                            </FloatingMenu>
+                        )}
+
+                        <EditorContent editor={editor} />
+                    </div>
+                </div>
+            </GlassCard>
 
             {/* Comments Sidebar Overlay */}
             {showComments && (
@@ -312,6 +310,6 @@ export const NoteEditor: React.FC<NoteEditorProps> = ({ note, onSave, onBack, re
                     />
                 </div>
             )}
-        </div>
+        </PageContainer>
     );
 };

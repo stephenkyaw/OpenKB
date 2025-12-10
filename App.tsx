@@ -211,7 +211,7 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-[#FDFBFF] text-slate-900 font-sans">
+    <div className="flex h-screen w-screen overflow-hidden bg-slate-25 text-slate-900 font-sans">
       <ProSidebar
         activeView={activeView}
         onChangeView={setActiveView}
@@ -225,7 +225,7 @@ const App: React.FC = () => {
       />
 
       {/* Main Content Area - Clean Split Screen */}
-      <main className="flex-1 flex flex-col h-full overflow-hidden relative bg-[#FDFBFF] z-0">
+      <main className="flex-1 flex flex-col h-full overflow-hidden relative bg-slate-25 z-0">
         {/* Global Mesh Gradient Background */}
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
           <div className="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] bg-primary-100/40 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-pulse"></div>

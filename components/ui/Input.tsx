@@ -30,7 +30,7 @@ export const Input: React.FC<InputProps> = ({
                 <input
                     id={id}
                     className={`
-            block w-full bg-slate-50 border rounded-[14px] 
+            block w-full bg-slate-50 border rounded-xl 
             focus:ring-2 focus:ring-primary-500 focus:border-primary-500 
             text-slate-900 placeholder-slate-400 text-sm outline-none transition-all
             ${icon ? 'pl-10' : 'px-4'} py-3

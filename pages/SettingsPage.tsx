@@ -29,8 +29,13 @@ const PROVIDER_MODELS: Record<string, string[]> = {
   'Local (Ollama)': ['llama3', 'mistral', 'gemma', 'phi3']
 };
 
+import { PageContainer } from '../components/layouts/PageContainer';
+import { GlassCard } from '../components/ui/GlassCard';
+
+// ... (previous interfaces and constants kept the same, just showing the component structure change)
+
 export const SettingsPage: React.FC<SettingsViewProps> = ({ user, onUpdateUser }) => {
-  // Profile State
+  // ... (state lines 33-47 unchanged)
   const [name, setName] = useState(user.name);
   const [email, setEmail] = useState(user.email);
   const [password, setPassword] = useState('');
@@ -72,8 +77,8 @@ export const SettingsPage: React.FC<SettingsViewProps> = ({ user, onUpdateUser }
   };
 
   return (
-    <div className="flex-1 overflow-auto bg-transparent p-8 custom-scrollbar">
-      <div className="max-w-4xl mx-auto space-y-8">
+    <PageContainer>
+      <div className="space-y-8">
 
         <div className="flex justify-between items-end">
           <div>
@@ -83,7 +88,7 @@ export const SettingsPage: React.FC<SettingsViewProps> = ({ user, onUpdateUser }
         </div>
 
         {/* Profile Settings */}
-        <div className="bg-white/60 backdrop-blur-xl rounded-[32px] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/60 p-8">
+        <GlassCard>
           <div className="flex items-center gap-4 mb-8">
             <div className="relative">
               <div className="w-20 h-20 rounded-full bg-primary-100 flex items-center justify-center text-primary-600 border-4 border-slate-50 text-2xl font-bold shadow-sm">
@@ -136,10 +141,10 @@ export const SettingsPage: React.FC<SettingsViewProps> = ({ user, onUpdateUser }
               {isProfileSaved ? 'Saved!' : 'Save Changes'}
             </Button>
           </div>
-        </div>
+        </GlassCard>
 
         {/* Connected Models List */}
-        <div className="bg-white/60 backdrop-blur-xl rounded-[32px] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/60 p-8">
+        <GlassCard>
           <div className="flex justify-between items-start mb-8">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center text-orange-600">
@@ -185,10 +190,10 @@ export const SettingsPage: React.FC<SettingsViewProps> = ({ user, onUpdateUser }
               </div>
             ))}
           </div>
-        </div>
+        </GlassCard>
 
         {/* Social Accounts */}
-        <div className="bg-white/60 backdrop-blur-xl rounded-[32px] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/60 p-8">
+        <GlassCard>
           <div className="flex items-center gap-4 mb-6">
             <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center text-purple-600">
               <Github size={24} />
@@ -215,7 +220,7 @@ export const SettingsPage: React.FC<SettingsViewProps> = ({ user, onUpdateUser }
               <button className="text-sm font-medium text-primary-600 hover:underline">Connect</button>
             </div>
           </div>
-        </div>
+        </GlassCard>
 
       </div>
 
@@ -261,7 +266,7 @@ export const SettingsPage: React.FC<SettingsViewProps> = ({ user, onUpdateUser }
           </form>
         </div>
       </Modal>
-    </div>
+    </PageContainer>
   );
 };
 

@@ -1,6 +1,8 @@
 import React from 'react';
 import { User, Agent, KnowledgeAsset, ChatSession, ViewState } from '../types';
 import { BrainCircuit, MessageSquareText, FileText, Bot, Plus, ArrowRight, Clock, Activity, Sparkles } from 'lucide-react';
+import { PageContainer } from '../components/layouts/PageContainer';
+import { GlassCard } from '../components/ui/GlassCard';
 
 interface HomeViewProps {
   user: User;
@@ -37,8 +39,8 @@ export const HomePage: React.FC<HomeViewProps> = ({
   };
 
   return (
-    <div className="flex-1 overflow-auto bg-[#FDFBFF] p-8">
-      <div className="max-w-7xl mx-auto space-y-10">
+    <PageContainer>
+      <div className="space-y-10">
 
         {/* Welcome Section */}
         <div className="flex justify-between items-center">
@@ -122,7 +124,7 @@ export const HomePage: React.FC<HomeViewProps> = ({
               })}
 
               {recentSessions.length === 0 && (
-                <div className="bg-white p-10 rounded-[24px] border border-slate-100 text-center">
+                <div className="p-10 rounded-[24px] border border-slate-100 text-center">
                   <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-300">
                     <MessageSquareText size={32} />
                   </div>
@@ -136,40 +138,51 @@ export const HomePage: React.FC<HomeViewProps> = ({
 
           {/* Quick Actions / System Status */}
           <div className="space-y-8">
-            <div>
-              <h2 className="text-xl font-semibold text-slate-800 mb-6 flex items-center gap-2"><Sparkles size={20} className="text-purple-400" /> Quick Actions</h2>
-              <div className="space-y-4">
-                <button
-                  onClick={() => onNavigate(ViewState.AGENTS)}
-                  className="w-full flex items-center gap-4 p-5 rounded-[24px] bg-white/60 backdrop-blur-xl border border-white/60 hover:bg-white/90 hover:scale-[1.02] hover:shadow-xl hover:shadow-purple-900/5 transition-all duration-300 group text-left"
-                >
-                  <div className="w-12 h-12 rounded-[18px] bg-purple-50 text-purple-600 flex items-center justify-center group-hover:bg-purple-600 group-hover:text-white transition-colors duration-300 shadow-sm">
-                    <Bot size={24} />
+            <GlassCard>
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-xl bg-rose-100 flex items-center justify-center text-rose-600">
+                  <Activity size={20} />
+                </div>
+                <h2 className="text-xl font-medium text-slate-800">Quick Actions</h2>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <button onClick={() => onNewChat()} className="p-4 rounded-2xl bg-white/50 border border-slate-100 hover:border-primary-300 hover:shadow-md transition-all text-left group">
+                  <div className="w-10 h-10 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                    <MessageSquareText size={20} />
                   </div>
-                  <div>
-                    <div className="font-bold text-slate-900 text-lg">Create Agent</div>
-                    <div className="text-xs text-slate-500 font-medium uppercase tracking-wide">Design custom persona</div>
-                  </div>
+                  <span className="font-semibold text-slate-700 block">New Chat</span>
+                  <span className="text-xs text-slate-500">Start a conversation</span>
                 </button>
 
-                <button
-                  onClick={() => onNavigate(ViewState.KNOWLEDGE)}
-                  className="w-full flex items-center gap-4 p-5 rounded-[24px] bg-white/60 backdrop-blur-xl border border-white/60 hover:bg-white/90 hover:scale-[1.02] hover:shadow-xl hover:shadow-emerald-900/5 transition-all duration-300 group text-left"
-                >
-                  <div className="w-12 h-12 rounded-[18px] bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover:bg-emerald-600 group-hover:text-white transition-colors duration-300 shadow-sm">
-                    <BrainCircuit size={24} />
+                <button onClick={() => onNavigate(ViewState.KNOWLEDGE)} className="p-4 rounded-2xl bg-white/50 border border-slate-100 hover:border-primary-300 hover:shadow-md transition-all text-left group">
+                  <div className="w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                    <FileText size={20} />
                   </div>
-                  <div>
-                    <div className="font-bold text-slate-900 text-lg">Add Knowledge</div>
-                    <div className="text-xs text-slate-500 font-medium uppercase tracking-wide">Upload docs or connect DB</div>
+                  <span className="font-semibold text-slate-700 block">Add Knowledge</span>
+                  <span className="text-xs text-slate-500">Upload data</span>
+                </button>
+
+                <button onClick={() => onNavigate(ViewState.AGENTS)} className="p-4 rounded-2xl bg-white/50 border border-slate-100 hover:border-primary-300 hover:shadow-md transition-all text-left group">
+                  <div className="w-10 h-10 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                    <Bot size={20} />
                   </div>
+                  <span className="font-semibold text-slate-700 block">Create Agent</span>
+                  <span className="text-xs text-slate-500">Build a custom bot</span>
+                </button>
+
+                <button onClick={() => onNavigate(ViewState.KNOWLEDGE)} className="p-4 rounded-2xl bg-white/50 border border-slate-100 hover:border-primary-300 hover:shadow-md transition-all text-left group">
+                  <div className="w-10 h-10 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                    <BrainCircuit size={20} />
+                  </div>
+                  <span className="font-semibold text-slate-700 block">Manage Assets</span>
+                  <span className="text-xs text-slate-500">View all assets</span>
                 </button>
               </div>
-            </div>
+            </GlassCard>
 
-            <div>
-              <h2 className="text-xl font-semibold text-slate-800 mb-6 flex items-center gap-2"><Activity size={20} className="text-emerald-400" /> System Status</h2>
-              <div className="bg-white/60 backdrop-blur-xl p-6 rounded-[28px] border border-white/60 shadow-sm">
+            <GlassCard>
+              <h2 className="text-xl font-medium text-slate-800 mb-6 flex items-center gap-2"><Activity size={20} className="text-emerald-400" /> System Status</h2>
+              <div>
                 <div className="flex items-center justify-between mb-4">
                   <span className="text-sm font-medium text-slate-600">Vector Database</span>
                   <span className="flex items-center gap-1.5 text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full border border-emerald-100">
@@ -190,11 +203,11 @@ export const HomePage: React.FC<HomeViewProps> = ({
                   </div>
                 </div>
               </div>
-            </div>
+            </GlassCard>
           </div>
-
         </div>
+
       </div>
-    </div>
+    </PageContainer >
   );
 };

@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { Agent, KnowledgeAsset, AgentTool } from '../types';
-import { Bot, Plus, Search, Filter, Grid, List, Trash2, MessageSquareText, ChevronLeft, ChevronRight, User, FileScan, PenTool, Globe, LineChart, Mail, Bell, HardDrive, GitBranch, UserCheck, StopCircle, Cpu, Edit, Settings } from 'lucide-react';
+import { Bot, Plus, Search, Filter, Grid, List, Trash2, MessageSquareText, ChevronLeft, ChevronRight, ArrowRight, User, FileScan, PenTool, Globe, LineChart, Mail, Bell, HardDrive, GitBranch, UserCheck, StopCircle, Cpu, Edit, Settings } from 'lucide-react';
 import { AgentWorkflowEditor } from '../features/agents/components/AgentWorkflowEditor';
 import { Card } from '../components/ui/Card';
 import { Modal } from '../components/ui/Modal';
 import { Badge } from '../components/ui/Badge';
 import { Select } from '../components/ui/Select';
+import { PageContainer } from '../components/layouts/PageContainer';
+import { GlassCard } from '../components/ui/GlassCard';
 
 const getToolIconComponent = (tool: AgentTool) => {
+    // ... (keep usage of this function same)
     switch (tool) {
         case AgentTool.RAG_SEARCH: return Search;
         case AgentTool.DOC_READER: return FileScan;
@@ -88,14 +91,6 @@ export const AgentsPage: React.FC<AgentManagementViewProps> = ({ agents, assets,
         setShowModal(false);
     };
 
-    // --- Render Helpers ---
-    // (Kept simplified for brevity - in real app, these could also be components)
-    // ...
-
-    // --- Render Helpers ---
-    // (Kept simplified for brevity - in real app, these could also be components)
-    // ...
-
     const renderEditorModal = () => (
         <Modal isOpen={showModal} onClose={() => setShowModal(false)} className="md:w-[96vw] md:h-[92vh] max-w-none max-h-none h-full w-full p-0 overflow-hidden md:rounded-[28px]">
             <div className="w-full h-full flex flex-col">
@@ -110,8 +105,8 @@ export const AgentsPage: React.FC<AgentManagementViewProps> = ({ agents, assets,
     );
 
     return (
-        <div className="flex-1 overflow-auto bg-[#FDFBFF] p-8 custom-scrollbar">
-            <div className="max-w-7xl mx-auto space-y-8">
+        <PageContainer>
+            <div className="space-y-8">
                 {/* Header */}
                 <div className="flex justify-between items-end">
                     <div>
@@ -154,131 +149,116 @@ export const AgentsPage: React.FC<AgentManagementViewProps> = ({ agents, assets,
                 </div>
 
                 {/* Grid/List View */}
-                {viewMode === 'grid' ? (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-                        {paginatedAgents.map(agent => (
-                            <div
-                                key={agent.id}
-                                onClick={() => onChatWithAgent(agent.id)}
-                                className="group relative bg-white/40 backdrop-blur-xl rounded-[32px] border border-white/60 shadow-sm hover:shadow-[0_20px_40px_rgba(0,0,0,0.05)] hover:bg-white/60 hover:border-white/80 hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col p-6 overflow-hidden"
-                            >
-                                {/* Gradient Background Accent */}
-                                <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${agent.color.replace('bg-', 'from-').replace('600', '400')} to-transparent opacity-10 rounded-bl-[64px] transition-all group-hover:scale-150 group-hover:opacity-20`} />
+                <GlassCard>
+                    <div className="flex items-center gap-3 mb-6">
+                        <div className="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center text-purple-600">
+                            <Bot size={20} />
+                        </div>
+                        <div className="flex-1">
+                            <h2 className="text-xl font-medium text-slate-800">Your Agents</h2>
+                            <p className="text-sm text-slate-500">Manage and customize your AI assistants.</p>
+                        </div>
+                    </div>
 
-                                <div className="relative z-10 flex flex-col h-full">
+                    {viewMode === 'grid' ? (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            {paginatedAgents.map(agent => (
+                                <div key={agent.id} className="group p-6 rounded-2xl bg-white/50 border border-slate-100 hover:border-primary-300 hover:shadow-md transition-all relative flex flex-col">
                                     <div className="flex justify-between items-start mb-4">
-                                        <div className={`w-14 h-14 rounded-[20px] flex items-center justify-center text-white shadow-lg shadow-indigo-500/20 ${agent.color}`}>
-                                            <Bot size={28} />
+                                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-white text-xl shadow-lg shadow-purple-900/10 ${agent.color}`}>
+                                            <Bot size={24} />
                                         </div>
                                         <div className="flex gap-1">
-                                            <button
-                                                onClick={(e) => { e.stopPropagation(); openEditModal(agent) }}
-                                                className="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:bg-white/50 hover:text-slate-600 transition-all"
-                                                title="Configure"
-                                            >
-                                                <Settings size={16} />
+                                            <button onClick={(e) => { e.stopPropagation(); openEditModal(agent); }} className="p-2 text-slate-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors">
+                                                <Edit size={16} />
                                             </button>
-                                            <button
-                                                onClick={(e) => { e.stopPropagation(); onDeleteAgent(agent.id) }}
-                                                className="w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:bg-red-50 hover:text-red-500 transition-all"
-                                                title="Delete"
-                                            >
+                                            <button onClick={(e) => { e.stopPropagation(); onDeleteAgent(agent.id); }} className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
                                                 <Trash2 size={16} />
                                             </button>
                                         </div>
                                     </div>
+                                    <h3 className="font-bold text-lg text-slate-900 mb-1">{agent.name}</h3>
+                                    <div className="text-xs font-bold text-primary-600 uppercase tracking-wider mb-3">{agent.role}</div>
+                                    <p className="text-sm text-slate-500 leading-relaxed mb-4 line-clamp-2">{agent.systemInstructions}</p>
 
-                                    <div className="mb-4">
-                                        <h3 className="text-lg font-bold text-slate-900 leading-tight group-hover:text-primary-600 transition-colors">{agent.name}</h3>
-                                        <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mt-1">{agent.role}</div>
-                                    </div>
-
-                                    {agent.description && (
-                                        <p className="text-sm text-slate-600 line-clamp-2 mb-4 font-medium leading-relaxed">
-                                            {agent.description}
-                                        </p>
-                                    )}
-
-                                    <div className="mt-auto pt-4 border-t border-white/40 flex flex-wrap gap-1.5">
-                                        {agent.tools?.slice(0, 3).map((tool, i) => (
-                                            <div key={i} className="px-2 py-1 rounded-lg bg-white/40 border border-white/40 flex items-center gap-1.5 text-[10px] font-bold text-slate-600 group-hover:bg-white/60 transition-colors">
-                                                {React.createElement(getToolIconComponent(tool), { size: 12 })}
-                                                <span className="truncate max-w-[80px]">{tool.replace('_', ' ')}</span>
-                                            </div>
-                                        ))}
-                                        {(agent.tools?.length || 0) > 3 && (
-                                            <div className="px-2 py-1 rounded-lg bg-white/40 border border-white/40 text-[10px] font-bold text-slate-500">
-                                                +{agent.tools!.length - 3}
-                                            </div>
-                                        )}
+                                    <div className="mt-auto pt-4 border-t border-slate-100/50 flex items-center justify-between">
+                                        <div className="flex items-center gap-2">
+                                            {agent.tools.slice(0, 3).map((tool, i) => (
+                                                <div key={i} className="text-slate-400" title={tool}>
+                                                    {React.createElement(getToolIconComponent(tool), { size: 16 })}
+                                                </div>
+                                            ))}
+                                            {(agent.tools?.length || 0) > 3 && <span className="text-xs text-slate-400">+{agent.tools!.length - 3}</span>}
+                                        </div>
+                                        <button onClick={() => onChatWithAgent(agent.id)} className="text-sm font-medium text-slate-400 hover:text-primary-600 transaction-colors flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                                            Details <ArrowRight size={14} />
+                                        </button>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
-                    </div>
-                ) : (
-                    <div className="bg-white/60 backdrop-blur-xl rounded-[32px] border border-white/60 overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
-                        <table className="w-full text-left text-sm">
-                            <thead className="bg-white/50 border-b border-white/50 text-slate-400 uppercase font-bold text-xs tracking-wider">
-                                <tr>
-                                    <th className="px-8 py-5">Agent Name</th>
-                                    <th className="px-8 py-5">Role</th>
-                                    <th className="px-8 py-5">Tools</th>
-                                    <th className="px-8 py-5 text-right">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-white/50">
-                                {paginatedAgents.map(agent => (
-                                    <tr key={agent.id} className="hover:bg-white/80 transition-colors cursor-pointer group" onClick={() => onChatWithAgent(agent.id)}>
-                                        <td className="px-8 py-5">
-                                            <div className="flex items-center gap-4">
-                                                <div className={`w-10 h-10 rounded-[12px] flex items-center justify-center text-white text-xs ${agent.color} shadow-sm group-hover:scale-110 transition-transform`}>
-                                                    <Bot size={20} />
-                                                </div>
-                                                <span className="font-bold text-slate-900 text-base">{agent.name}</span>
-                                            </div>
-                                        </td>
-                                        <td className="px-8 py-5">
-                                            <Badge variant="outline" className="bg-white/50">{agent.role}</Badge>
-                                        </td>
-                                        <td className="px-8 py-5">
-                                            <div className="flex -space-x-2">
-                                                {agent.tools?.slice(0, 3).map((tool, i) => (
-                                                    <div key={i} className="w-8 h-8 rounded-full bg-white border-2 border-white flex items-center justify-center text-slate-500 shadow-sm" title={tool}>
-                                                        {React.createElement(getToolIconComponent(tool), { size: 14 })}
-                                                    </div>
-                                                ))}
-                                                {(agent.tools?.length || 0) > 3 && <div className="w-8 h-8 rounded-full bg-slate-50 border-2 border-white flex items-center justify-center text-xs font-bold text-slate-400">+{agent.tools!.length - 3}</div>}
-                                            </div>
-                                        </td>
-                                        <td className="px-8 py-5 text-right">
-                                            <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                <button onClick={(e) => { e.stopPropagation(); openEditModal(agent); }} className="p-2 hover:bg-slate-100 text-slate-400 rounded-full transition-colors"><Settings size={18} /></button>
-                                                <button onClick={(e) => { e.stopPropagation(); onChatWithAgent(agent.id); }} className="p-2 hover:bg-primary-50 text-primary-600 rounded-full transition-colors"><MessageSquareText size={18} /></button>
-                                                <button onClick={(e) => { e.stopPropagation(); onDeleteAgent(agent.id); }} className="p-2 hover:bg-red-50 text-red-500 rounded-full transition-colors"><Trash2 size={18} /></button>
-                                            </div>
-                                        </td>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="overflow-x-auto">
+                            <table className="w-full text-left border-collapse">
+                                <thead>
+                                    <tr className="border-b border-white/50 text-xs font-bold text-slate-400 uppercase tracking-widest">
+                                        <th className="px-8 py-5">Agent</th>
+                                        <th className="px-8 py-5">Role</th>
+                                        <th className="px-8 py-5">Tools</th>
+                                        <th className="px-8 py-5 text-right">Actions</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                )}
+                                </thead>
+                                <tbody className="divide-y divide-white/50">
+                                    {paginatedAgents.map(agent => (
+                                        <tr key={agent.id} className="hover:bg-white/80 transition-colors cursor-pointer group" onClick={() => onChatWithAgent(agent.id)}>
+                                            <td className="px-8 py-5">
+                                                <div className="flex items-center gap-4">
+                                                    <div className={`w-10 h-10 rounded-[12px] flex items-center justify-center text-white text-xs ${agent.color} shadow-sm group-hover:scale-110 transition-transform`}>
+                                                        <Bot size={20} />
+                                                    </div>
+                                                    <span className="font-bold text-slate-900 text-base">{agent.name}</span>
+                                                </div>
+                                            </td>
+                                            <td className="px-8 py-5">
+                                                <Badge variant="outline" className="bg-white/50">{agent.role}</Badge>
+                                            </td>
+                                            <td className="px-8 py-5">
+                                                <div className="flex -space-x-2">
+                                                    {agent.tools?.slice(0, 3).map((tool, i) => (
+                                                        <div key={i} className="w-8 h-8 rounded-full bg-white border-2 border-white flex items-center justify-center text-slate-500 shadow-sm" title={tool}>
+                                                            {React.createElement(getToolIconComponent(tool), { size: 14 })}
+                                                        </div>
+                                                    ))}
+                                                    {(agent.tools?.length || 0) > 3 && <div className="w-8 h-8 rounded-full bg-slate-50 border-2 border-white flex items-center justify-center text-xs font-bold text-slate-400">+{agent.tools!.length - 3}</div>}
+                                                </div>
+                                            </td>
+                                            <td className="px-8 py-5 text-right">
+                                                <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                    <button onClick={(e) => { e.stopPropagation(); openEditModal(agent); }} className="p-2 hover:bg-slate-100 text-slate-400 rounded-full transition-colors"><Settings size={18} /></button>
+                                                    <button onClick={(e) => { e.stopPropagation(); onChatWithAgent(agent.id); }} className="p-2 hover:bg-primary-50 text-primary-600 rounded-full transition-colors"><MessageSquareText size={18} /></button>
+                                                    <button onClick={(e) => { e.stopPropagation(); onDeleteAgent(agent.id); }} className="p-2 hover:bg-red-50 text-red-500 rounded-full transition-colors"><Trash2 size={18} /></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
 
-                {/* Pagination Controls */}
-                {
-                    totalPages > 1 && (
-                        <div className="flex justify-center mt-8">
-                            <div className="flex items-center gap-2 bg-white p-1 rounded-full shadow-sm border border-slate-100">
+                    {/* Pagination Controls */}
+                    {totalPages > 1 && (
+                        <div className="flex justify-center mt-8 border-t border-slate-100/50 pt-8">
+                            <div className="flex items-center gap-2 bg-white/50 p-1 rounded-full shadow-sm border border-slate-100/50 backdrop-blur-sm">
                                 <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} className="p-2 hover:bg-slate-50 rounded-full disabled:opacity-50"><ChevronLeft size={16} /></button>
                                 <span className="text-sm font-medium text-slate-600 px-2">{currentPage} / {totalPages}</span>
                                 <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} className="p-2 hover:bg-slate-50 rounded-full disabled:opacity-50"><ChevronRight size={16} /></button>
                             </div>
                         </div>
-                    )
-                }
-            </div >
+                    )}
+                </GlassCard>
+            </div>
             {renderEditorModal()}
-        </div >
+        </PageContainer>
     );
 };

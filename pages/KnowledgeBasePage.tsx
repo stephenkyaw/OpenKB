@@ -9,6 +9,8 @@ import { Badge } from '../components/ui/Badge';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { Select } from '../components/ui/Select';
+import { PageContainer } from '../components/layouts/PageContainer';
+import { GlassCard } from '../components/ui/GlassCard';
 
 const getAssetIcon = (type: AssetType) => {
   switch (type) {
@@ -244,8 +246,8 @@ export const KnowledgeBasePage: React.FC<KnowledgeBaseViewProps> = ({ assets, on
   );
 
   return (
-    <div className="flex-1 overflow-auto bg-transparent p-8 custom-scrollbar">
-      <div className="max-w-6xl mx-auto space-y-6">
+    <PageContainer>
+      <div className="space-y-6">
 
         <div className="flex justify-between items-end mb-2">
           <div>
@@ -254,9 +256,9 @@ export const KnowledgeBasePage: React.FC<KnowledgeBaseViewProps> = ({ assets, on
           </div>
         </div>
 
-        {/* Tabs */}
-        <div className="bg-white/60 backdrop-blur-xl rounded-[32px] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/60 overflow-hidden">
-          <div className="flex border-b border-white/50 overflow-x-auto p-1.5 gap-1">
+        {/* Tabs & Active Content */}
+        <GlassCard noPadding className="overflow-hidden">
+          <div className="flex border-b border-white/50 overflow-x-auto p-1.5 gap-1 bg-white/40">
             {[
               { type: AssetType.FILE, icon: FileText, label: 'Documents' },
               { type: AssetType.WEBSITE, icon: Globe, label: 'Web Resources' },
@@ -436,13 +438,13 @@ export const KnowledgeBasePage: React.FC<KnowledgeBaseViewProps> = ({ assets, on
             )}
 
           </div>
-        </div>
+        </GlassCard>
 
         {/* Assets Table */}
-        <div className="bg-white/60 backdrop-blur-xl rounded-[32px] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/60 overflow-hidden">
+        <GlassCard noPadding className="overflow-hidden">
 
           {/* Toolbar */}
-          <div className="p-6 border-b border-white/50 flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="p-6 border-b border-white/50 flex flex-col md:flex-row justify-between items-center gap-4 bg-white/30">
             <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
               Indexed Assets <span className="bg-white text-primary-600 border border-primary-100 text-xs font-bold px-2.5 py-1 rounded-full shadow-sm">{filteredAssets.length}</span>
             </h2>
@@ -563,16 +565,15 @@ export const KnowledgeBasePage: React.FC<KnowledgeBaseViewProps> = ({ assets, on
               </div>
             </div>
           )}
-        </div>
+        </GlassCard>
 
       </div>
 
       {/* Render Modals */}
       <PreviewModal />
       <ConnectServiceModal />
-    </div>
+    </PageContainer>
   );
 };
 
 // Helper for icon component in DB add button
-
